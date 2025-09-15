@@ -73,9 +73,19 @@ struct Vector{
   Vector &operator=(Vector &&other)
   {
     this->~Vector();
-    new(this)Vector(std::move(other));
+    //在已有的内存地址上构造一个新对象
+    new(this)Vector(std::move(other));//placement new（定位new）
     return *this;
   }
+  //placement new介绍
+  /*
+    placement new和普通的new相比，它不会分配新的内存，而是在已经分配好的内存上调用对象的构造函数
+    char buffer[sizeof(MyClass)];
+    MyClass* obj = new (buffer) MyClass(); // placement new
+    注意：placement new不管理内存的释放，必须显示调用析构函数来释放对象占用的资源
+    obj->~MyClass();
+    注意使用是还要记得先把原来对象析构掉再new
+  */
 
   ~Vector()
   {
@@ -110,11 +120,5 @@ int main (int argc, char *argv[]) {
   std::swap(pig, pig2);
   std::cout << pig.m_name << ' ' << pig.m_weight << std::endl;
 
-  //以下这俩基本没有区别，但是那些基础类型的话会产生随机初始化(而不是零初始化)
-  Pig* pig3 = new Pig;
-  Pig* pig4 = new Pig();
-  int* a = new int;
-  int* b = new int();
-  std::cout << *a << ' ' << *b << std::endl;
   return 0;
 }
