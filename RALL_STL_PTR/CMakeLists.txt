@@ -1,2 +1,2 @@
-add_executable(rall_str_ptr 1.cc)
+add_executable(rall_str_ptr shared_ptr.cc)
 
