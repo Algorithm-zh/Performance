@@ -54,6 +54,7 @@ int main (int argc, char *argv[]) {
   show_times<2>("two");
   show_times<3>("three");
   show_times2<4>(42);
+  show_times2("hh");//如果模板里的值在参数里出现可以省去尖括号,可以自动推导类型
 
   std::vector<int>a{1, 2, 3, 4};
   std::cout << sum(a) << std::endl;
