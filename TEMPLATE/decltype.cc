@@ -28,6 +28,7 @@ int& func()
   return a;
 }
 
+//用decltype算出t1和t2两个不同类型的相加后的结果
 template<class T1, class T2>
 auto add(std::vector<T1> const &a, std::vector<T2> const &b)
 {
