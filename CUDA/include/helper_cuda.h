@@ -928,7 +928,7 @@ inline int findIntegratedGPU() {
   return -1;
 }
 
-// General check for CUDA GPU SM Capabilities
+// Generayl check for CUDA GPU SM Capabilities
 inline bool checkCudaCapabilities(int major_version, int minor_version) {
   int dev;
   int major = 0, minor = 0;
