@@ -8,7 +8,7 @@
 
 __global__ void parallel_sum(int *sum, int const *arr, int n){
   for(int i = blockDim.x * blockIdx.x + threadIdx.x; i < n; i += blockDim.x * gridDim.x){
-    //并行编程，所以必须用原子操作,但是很影响性能
+    //并行编程，所以必须用原子操作,但是很影响性能,但是编译器会自动优化为BLS
     atomicAdd(&sum[0], arr[i]);
   }
 }
@@ -243,6 +243,7 @@ int parallel_sum(T const *arr, int n){
 // sum 6 result: 25172683
 // parallel_sum_final: 0.00100452s
 // sum final result: 25172683
+// 可以看到使用atomicAdd速度很快，因为编译器会自动优化为BLS，所以实际使用直接写atomicAdd即可
 
 
 int main(){
