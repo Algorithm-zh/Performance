@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <string_view>
 
 
 std::vector<std::string> split(std::string s){
@@ -80,5 +81,29 @@ int main (int argc, char *argv[]) {
     std::cout << vi << std::endl;
   }
 
+  //point 8B  len 8B  local_buf 16B(capacity 8B unused 8B) 
+  std::cout << sizeof(cs) << std::endl;//32
+  //vector则是24,因为他没有小字符串优化这个东西
+  
+  std::string s1 = "abcdefghijklnop";//经过测试最多长度为15，再长就不是在栈上了
+  std::string_view s2 = s1;
+  //切片 这样切片他会拷贝一个新的string对象，然后把字字符串拷贝到这个string对象里
+  //浪费了内存,所以出现了string_view，只返回切片后的胖指针(ptr, len)
+  //让新字符串和原字符串共享一片内存
+  std::cout << s1.substr(2, 8) << std::endl;
+  std::cout << s2.substr(1, 8) << std::endl;
+  s1 = "abcdefghijklmnopqrst";
+  std::cout << s1 << std::endl;
+  //s1变大重新分配内存了，所以s2这个弱引用就失效了
+  //有的时候不会失效是因为字符串太短，因此直接把他放到了栈上
+  //会分配栈空间，如果长度小则存储在栈上
+  std::cout << s2 << std::endl;
+
+
+
+  std::string a4{"abc"};
+  //可以看到string的capacity是15起步的，因为他会直接在栈上分配一个16大小的内存(还有一个是0，给c_str用的)
+  //vector就不是，他甚至可以是0
+  std::cout << a4.capacity() << std::endl;
   return 0;
 }
